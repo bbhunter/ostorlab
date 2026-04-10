@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nFostorlab/agent/message/proto/v3/asset/file/api_schema/api_schema.proto\x12\x35ostorlab.agent.message.proto.v3.asset.file.api_schema\"\'\n\x0f\x41ndroidMetadata\x12\x14\n\x0cpackage_name\x18\x01 \x01(\t\" \n\x0bIOSMetadata\x12\x11\n\tbundle_id\x18\x01 \x01(\t\"%\n\x06Header\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x90\x03\n\x07Message\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_url\x18\x03 \x01(\t\x12\x62\n\x10\x61ndroid_metadata\x18\x04 \x01(\x0b\x32\x46.ostorlab.agent.message.proto.v3.asset.file.api_schema.AndroidMetadataH\x00\x12Z\n\x0cios_metadata\x18\x05 \x01(\x0b\x32\x42.ostorlab.agent.message.proto.v3.asset.file.api_schema.IOSMetadataH\x00\x12\x14\n\x0c\x65ndpoint_url\x18\x06 \x01(\t\x12\x13\n\x0bschema_type\x18\x07 \x01(\t\x12T\n\rextra_headers\x18\x08 \x03(\x0b\x32=.ostorlab.agent.message.proto.v3.asset.file.api_schema.HeaderB\x10\n\x0emetadata_oneof')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\nFostorlab/agent/message/proto/v3/asset/file/api_schema/api_schema.proto\x12\x35ostorlab.agent.message.proto.v3.asset.file.api_schema\"\'\n\x0f\x41ndroidMetadata\x12\x14\n\x0cpackage_name\x18\x01 \x01(\t\" \n\x0bIOSMetadata\x12\x11\n\tbundle_id\x18\x01 \x01(\t\"(\n\x11HarmonyOSMetadata\x12\x13\n\x0b\x62undle_name\x18\x01 \x01(\t\"%\n\x06Header\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\xf8\x03\n\x07Message\x12\x0f\n\x07\x63ontent\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x13\n\x0b\x63ontent_url\x18\x03 \x01(\t\x12\x62\n\x10\x61ndroid_metadata\x18\x04 \x01(\x0b\x32\x46.ostorlab.agent.message.proto.v3.asset.file.api_schema.AndroidMetadataH\x00\x12Z\n\x0cios_metadata\x18\x05 \x01(\x0b\x32\x42.ostorlab.agent.message.proto.v3.asset.file.api_schema.IOSMetadataH\x00\x12\x66\n\x12harmonyos_metadata\x18\t \x01(\x0b\x32H.ostorlab.agent.message.proto.v3.asset.file.api_schema.HarmonyOSMetadataH\x00\x12\x14\n\x0c\x65ndpoint_url\x18\x06 \x01(\t\x12\x13\n\x0bschema_type\x18\x07 \x01(\t\x12T\n\rextra_headers\x18\x08 \x03(\x0b\x32=.ostorlab.agent.message.proto.v3.asset.file.api_schema.HeaderB\x10\n\x0emetadata_oneof')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ostorlab.agent.message.proto.v3.asset.file.api_schema.api_schema_pb2', globals())
@@ -24,8 +24,10 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _ANDROIDMETADATA._serialized_end=168
   _IOSMETADATA._serialized_start=170
   _IOSMETADATA._serialized_end=202
-  _HEADER._serialized_start=204
-  _HEADER._serialized_end=241
-  _MESSAGE._serialized_start=244
-  _MESSAGE._serialized_end=644
+  _HARMONYOSMETADATA._serialized_start=204
+  _HARMONYOSMETADATA._serialized_end=244
+  _HEADER._serialized_start=246
+  _HEADER._serialized_end=283
+  _MESSAGE._serialized_start=286
+  _MESSAGE._serialized_end=790
 # @@protoc_insertion_point(module_scope)
