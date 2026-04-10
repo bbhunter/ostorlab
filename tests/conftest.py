@@ -26,6 +26,12 @@ from ostorlab.assets import android_apk as android_apk_asset
 from ostorlab.assets import android_store as android_store_asset
 from ostorlab.assets import domain_name as domain_name_asset
 from ostorlab.assets import file as file_asset
+from ostorlab.assets import harmonyos_aab as harmonyos_aab_asset
+from ostorlab.assets import harmonyos_apk as harmonyos_apk_asset
+from ostorlab.assets import harmonyos_app as harmonyos_app_asset
+from ostorlab.assets import harmonyos_hap as harmonyos_hap_asset
+from ostorlab.assets import harmonyos_rpk as harmonyos_rpk_asset
+from ostorlab.assets import harmonyos_store as harmonyos_store_asset
 from ostorlab.assets import ios_ipa as ios_ipa_asset
 from ostorlab.assets import ios_store as ios_store_asset
 from ostorlab.assets import ipv4 as ipv4_asset
@@ -364,6 +370,96 @@ def vulnerability_location_ios_ipa(
             metadata_url,
         ],
         asset=ios_ipa_asset.IOSIpa(content=b"a.b.c"),
+    )
+
+
+@pytest.fixture()
+def vulnerability_location_harmonyos_store(
+    metadata_file_path, metadata_code_location, metadata_port, metadata_url
+):
+    return agent_report_vulnerability_mixin.VulnerabilityLocation(
+        metadata=[
+            metadata_file_path,
+            metadata_code_location,
+            metadata_port,
+            metadata_url,
+        ],
+        asset=harmonyos_store_asset.HarmonyOSStore(bundle_name="a.b.c"),
+    )
+
+
+@pytest.fixture()
+def vulnerability_location_harmonyos_aab(
+    metadata_file_path, metadata_code_location, metadata_port, metadata_url
+):
+    return agent_report_vulnerability_mixin.VulnerabilityLocation(
+        metadata=[
+            metadata_file_path,
+            metadata_code_location,
+            metadata_port,
+            metadata_url,
+        ],
+        asset=harmonyos_aab_asset.HarmonyOSAab(content=b"aab"),
+    )
+
+
+@pytest.fixture()
+def vulnerability_location_harmonyos_apk(
+    metadata_file_path, metadata_code_location, metadata_port, metadata_url
+):
+    return agent_report_vulnerability_mixin.VulnerabilityLocation(
+        metadata=[
+            metadata_file_path,
+            metadata_code_location,
+            metadata_port,
+            metadata_url,
+        ],
+        asset=harmonyos_apk_asset.HarmonyOSApk(content=b"apk"),
+    )
+
+
+@pytest.fixture()
+def vulnerability_location_harmonyos_app(
+    metadata_file_path, metadata_code_location, metadata_port, metadata_url
+):
+    return agent_report_vulnerability_mixin.VulnerabilityLocation(
+        metadata=[
+            metadata_file_path,
+            metadata_code_location,
+            metadata_port,
+            metadata_url,
+        ],
+        asset=harmonyos_app_asset.HarmonyOSApp(content=b"app"),
+    )
+
+
+@pytest.fixture()
+def vulnerability_location_harmonyos_hap(
+    metadata_file_path, metadata_code_location, metadata_port, metadata_url
+):
+    return agent_report_vulnerability_mixin.VulnerabilityLocation(
+        metadata=[
+            metadata_file_path,
+            metadata_code_location,
+            metadata_port,
+            metadata_url,
+        ],
+        asset=harmonyos_hap_asset.HarmonyOSHap(content=b"hap"),
+    )
+
+
+@pytest.fixture()
+def vulnerability_location_harmonyos_rpk(
+    metadata_file_path, metadata_code_location, metadata_port, metadata_url
+):
+    return agent_report_vulnerability_mixin.VulnerabilityLocation(
+        metadata=[
+            metadata_file_path,
+            metadata_code_location,
+            metadata_port,
+            metadata_url,
+        ],
+        asset=harmonyos_rpk_asset.HarmonyOSRpk(content=b"rpk"),
     )
 
 
