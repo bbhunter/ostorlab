@@ -64,10 +64,11 @@ async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
         stub, name="test1", keys=["d.#"], url="amqp://wrong:wrong@localhost:5672/"
     )
     # Mock _get_connection to fail immediately, not retry
-    async def _fail_get_connection():
-        raise aiormq_exceptions.AMQPConnectionError("connection refused")
-
-    mocker.patch.object(client, "_get_connection", _fail_get_connection)
+    mocker.patch(
+        "aio_pika.connect_robust",
+        new_callable=AsyncMock,
+        side_effect=aiormq.exceptions.AMQPConnectionError("connection refused"),
+    )
 
     task = asyncio.create_task(client.mq_init())
 
