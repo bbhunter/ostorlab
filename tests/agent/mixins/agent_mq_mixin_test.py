@@ -49,20 +49,20 @@ async def testClient_whenMessageIsSent_processMessageIsCalled(mocker, mq_service
     assert stub.call_count == 1
 
 
-# @pytest.mark.asyncio
-# async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
-#     stub = mocker.stub(name="test1")
-#     client = Agent.create(
-#         stub, name="test1", keys=["d.#"], url="amqp://wrong:wrong@localhost:5672/"
-#     )
-#     task = asyncio.create_task(client.mq_init())
-#
-#     try:
-#         await asyncio.wait_for(task, timeout=10)
-#     except asyncio.TimeoutError:
-#         pass
-#
-#     assert task.done() is True
+@pytest.mark.asyncio
+async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
+    stub = mocker.stub(name="test1")
+    client = Agent.create(
+        stub, name="test1", keys=["d.#"], url="amqp://wrong:wrong@localhost:5672/"
+    )
+    task = asyncio.create_task(client.mq_init())
+
+    try:
+        await asyncio.wait_for(task, timeout=10)
+    except asyncio.TimeoutError:
+        pass
+
+    assert task.done() is True
 
 
 @pytest.mark.skip(reason="Needs debugging why MQ is not resending the message")
