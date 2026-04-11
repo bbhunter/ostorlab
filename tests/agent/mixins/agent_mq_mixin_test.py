@@ -63,15 +63,22 @@ async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
     client = Agent.create(
         stub, name="test1", keys=["d.#"], url="amqp://wrong:wrong@localhost:5672/"
     )
+    # Mock _get_connection to fail immediately, not retry
+    async def _fail_get_connection():
+        raise aiormq_exceptions.AMQPConnectionError("connection refused")
+
+    mocker.patch.object(client, "_get_connection", _fail_get_connection)
+
     task = asyncio.create_task(client.mq_init())
 
     try:
         await asyncio.wait_for(task, timeout=10)
-    except Exception as e:
-        print(e)
+    except asyncio.TimeoutError:
         task.cancel()
         with contextlib.suppress(asyncio.CancelledError, asyncio.CancelledError):
             await task
+    except aiormq_exceptions.AMQPConnectionError:
+        pass
 
     await client.mq_shutdown()
 
