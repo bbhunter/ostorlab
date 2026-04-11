@@ -130,38 +130,38 @@ async def testClient_whenClientDisconnects_messageIsNotLost(mocker, mq_service):
     assert stub.call_count == 1
 
 
-# def testMqSendMessage_onConnectionResetError_shouldRetriesAndReraise(
-#     mocker,
-# ):
-#     mock_send_message = mocker.patch.object(agent_mq_mixin.AgentMQMixin, "_get_channel")
-#     mock_send_message.side_effect = ConnectionResetError
-#     agent = agent_mq_mixin.AgentMQMixin(
-#         name="test",
-#         keys=["a.#"],
-#         url="amqp://guest:guest@localhost:5672/",
-#         topic="test_topic",
-#     )
-#
-#     with pytest.raises(ConnectionResetError):
-#         agent.mq_send_message(key="a.1.2", message=b"test message")
-#
-#     assert mock_send_message.call_count == 6
+def testMqSendMessage_onConnectionResetError_shouldRetriesAndReraise(
+    mocker,
+):
+    mock_send_message = mocker.patch.object(agent_mq_mixin.AgentMQMixin, "_get_channel")
+    mock_send_message.side_effect = ConnectionResetError
+    agent = agent_mq_mixin.AgentMQMixin(
+        name="test",
+        keys=["a.#"],
+        url="amqp://guest:guest@localhost:5672/",
+        topic="test_topic",
+    )
+
+    with pytest.raises(ConnectionResetError):
+        agent.mq_send_message(key="a.1.2", message=b"test message")
+
+    assert mock_send_message.call_count == 6
 
 
-# def testMqSendMessage_onCanceledError_shouldRetryAndReraise(
-#     mocker: plugin.MockerFixture,
-# ) -> None:
-#     """Test that the message is retried when a CancelledError is raised."""
-#     mock_send_message = mocker.patch.object(agent_mq_mixin.AgentMQMixin, "_get_channel")
-#     mock_send_message.side_effect = concurrent.futures.CancelledError
-#     agent = agent_mq_mixin.AgentMQMixin(
-#         name="test",
-#         keys=["a.#"],
-#         url="amqp://guest:guest@localhost:5672/",
-#         topic="test_topic",
-#     )
-#
-#     with pytest.raises(concurrent.futures.CancelledError):
-#         agent.mq_send_message(key="a.1.2", message=b"test message")
-#
-#     assert mock_send_message.call_count == 6
+def testMqSendMessage_onCanceledError_shouldRetryAndReraise(
+    mocker: plugin.MockerFixture,
+) -> None:
+    """Test that the message is retried when a CancelledError is raised."""
+    mock_send_message = mocker.patch.object(agent_mq_mixin.AgentMQMixin, "_get_channel")
+    mock_send_message.side_effect = concurrent.futures.CancelledError
+    agent = agent_mq_mixin.AgentMQMixin(
+        name="test",
+        keys=["a.#"],
+        url="amqp://guest:guest@localhost:5672/",
+        topic="test_topic",
+    )
+
+    with pytest.raises(concurrent.futures.CancelledError):
+        agent.mq_send_message(key="a.1.2", message=b"test message")
+
+    assert mock_send_message.call_count == 6
