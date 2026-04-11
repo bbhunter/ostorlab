@@ -133,7 +133,6 @@ class AuthenticatedAPIRunner(runner.APIRunner):
             console.warning("No authentication credentials were provided.")
 
         response = self._sent_request(request, headers)
-        print(response)
         if response.status_code != 200:
             logger.debug(
                 "Response status code is %s: %s", response.status_code, response.content
@@ -143,7 +142,6 @@ class AuthenticatedAPIRunner(runner.APIRunner):
             )
         data: Dict[str, Any] = response.json()
         errors = data.get("errors")
-        print(errors)
         if errors is not None and isinstance(errors, list):
             error = errors[0].get("message")
             raise runner.ResponseError(f"Response errors: {error}")
