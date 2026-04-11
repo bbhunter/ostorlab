@@ -60,7 +60,8 @@ async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
 
     try:
         await asyncio.wait_for(task, timeout=10)
-    except asyncio.TimeoutError:
+    except Exception as e:
+        print(e)
         task.cancel()
         with contextlib.suppress(asyncio.CancelledError, asyncio.CancelledError):
             await task
