@@ -39,17 +39,24 @@ def get_details(agent_key: str) -> dict[str, Any]:
     Raises:
         AgentDetailsNotFound: If the agent is not found.
     """
+    print("fetch details for " + agent_key)
     config_manager = configuration_manager.ConfigurationManager()
 
     if config_manager.is_authenticated is True:
+        print("Using authenticated")
         runner = authenticated_runner.AuthenticatedAPIRunner()
     else:
         runner = public_runner.PublicAPIRunner()
 
     try:
+        print("before running for " + agent_key)
         response = runner.execute(agent_details_api.AgentDetailsAPIRequest(agent_key))
+        print(response)
     except base_runner.ResponseError as e:
         raise AgentDetailsNotFound("requested agent not found") from e
+    except Exception as e:
+        print("New error")
+        print(e)
 
     if "errors" in response:
         error_message = f"""The provided agent key : {agent_key} does not correspond to any agent.
