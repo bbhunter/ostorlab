@@ -3,7 +3,6 @@
 import asyncio
 from unittest import mock
 import concurrent.futures
-import contextlib
 
 import pytest
 from pytest_mock import plugin
@@ -50,13 +49,6 @@ async def testClient_whenMessageIsSent_processMessageIsCalled(mocker, mq_service
     assert stub.call_count == 1
 
 
-async def mq_shutdown(self):
-    if hasattr(self, "_channel_pool"):
-        await self._channel_pool.close()
-    if hasattr(self, "_connection_pool"):
-        await self._connection_pool.close()
-
-
 @pytest.mark.asyncio
 async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
     stub = mocker.stub(name="test1")
@@ -75,13 +67,7 @@ async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
     try:
         await asyncio.wait_for(task, timeout=10)
     except asyncio.TimeoutError:
-        task.cancel()
-        with contextlib.suppress(asyncio.CancelledError, asyncio.CancelledError):
-            await task
-    except aiormq_exceptions.AMQPConnectionError:
         pass
-
-    await client.mq_shutdown()
 
     assert task.done() is True
 
