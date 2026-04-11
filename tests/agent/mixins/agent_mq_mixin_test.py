@@ -3,6 +3,7 @@
 import asyncio
 from unittest import mock
 import concurrent.futures
+import contextlib
 
 import pytest
 from pytest_mock import plugin
