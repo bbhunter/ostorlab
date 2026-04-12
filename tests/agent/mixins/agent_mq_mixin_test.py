@@ -6,6 +6,7 @@ import concurrent.futures
 
 import pytest
 from pytest_mock import plugin
+from aiormq import exceptions as aiormq_exceptions
 
 from ostorlab.agent.mixins import agent_mq_mixin
 from ostorlab.utils import strings
@@ -55,11 +56,17 @@ async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
     client = Agent.create(
         stub, name="test1", keys=["d.#"], url="amqp://wrong:wrong@localhost:5672/"
     )
+
+    async def connect_robust_fail(*args, **kwargs):
+        raise aiormq_exceptions.AMQPConnectionError("connection refused")
+
+    mocker.patch("aio_pika.connect_robust", side_effect=connect_robust_fail)
+
     task = asyncio.create_task(client.mq_init())
 
     try:
         await asyncio.wait_for(task, timeout=10)
-    except asyncio.TimeoutError:
+    except aiormq_exceptions.AMQPConnectionError:
         pass
 
     assert task.done() is True

@@ -205,6 +205,9 @@ class CloudRuntime(runtime.Runtime):
         elif asset_data.get("bundleId") is not None:
             bundle_id = asset_data.get("bundleId")
             location_markdwon_value = f"iOS bundle id: {bundle_id}  \n"
+        elif asset_data.get("bundleName") is not None:
+            bundle_name = asset_data.get("bundleName")
+            location_markdwon_value = f"HarmonyOS bundle name: {bundle_name}  \n"
         else:
             raise ValueError(f"Unknown asset : {asset_data}")
 
