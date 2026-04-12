@@ -80,6 +80,36 @@ def testModelsVulnerability_whenDatabaseDoesNotExist_DatabaseAndScanCreated(
         )
 
 
+def testModelsVulnerability_whenLocationIsHarmonyOSStore_shouldFormatLocation(
+    mocker: plugin.MockerFixture, db_engine_path: str
+) -> None:
+    """Ensure HarmonyOS store vulnerability locations are rendered with explicit label."""
+    mocker.patch.object(models, "ENGINE_URL", db_engine_path)
+    create_scan_db = models.Scan.create("test")
+
+    models.Vulnerability.create(
+        title="MyVuln",
+        short_description="Xss",
+        description="Javascript Vuln",
+        recommendation="Sanitize data",
+        technical_detail="a=$input",
+        risk_rating="HIGH",
+        cvss_v3_vector="5:6:7",
+        dna="121312",
+        location={
+            "harmonyos_store": {"bundle_name": "com.example.harmony"},
+            "metadata": [{"type": "CODE_LOCATION", "value": "entry.ets:7"}],
+        },
+        scan_id=create_scan_db.id,
+        references=[],
+    )
+
+    with models.Database() as session:
+        location = session.query(models.Vulnerability).all()[0].location
+        assert "HarmonyOS: `com.example.harmony`" in location
+        assert "CODE_LOCATION: entry.ets:7" in location
+
+
 def testModelsVulnerability_whenAssetIsNotSupported_doNotRaiseError(
     mocker, db_engine_path
 ):

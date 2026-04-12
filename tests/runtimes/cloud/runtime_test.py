@@ -3,6 +3,7 @@
 import io
 from typing import Dict, List, Optional, Union
 
+import pytest
 from ostorlab.apis import request
 from ostorlab.runtimes import definitions
 from ostorlab.apis.runners import authenticated_runner
@@ -116,3 +117,35 @@ def testRuntimeScanStop_whenScanIdIsValid_RemovesScanService(
     assert (
         mock_agent_group.call_args[0][2][0]["args"][3]["value"] == b'["url1", "url2"]'
     )
+
+
+def testPrepareVulnLocationMarkdown_whenHarmonyOSBundleName_shouldReturnFormattedValue():
+    """Ensure cloud formatter supports HarmonyOS asset payloads."""
+    runtime = cloud_runtime.CloudRuntime()
+
+    formatted = runtime._prepare_vuln_location_markdown(
+        {
+            "asset": {"bundleName": "com.example.harmony"},
+            "metadata": [
+                {"metadataType": "CODE_LOCATION", "metadataValue": "Main.ets:42"}
+            ],
+        }
+    )
+
+    assert "HarmonyOS bundle name: com.example.harmony" in formatted
+    assert "CODE_LOCATION: Main.ets:42" in formatted
+
+
+def testPrepareVulnLocationMarkdown_whenUnknownAsset_shouldRaiseValueError():
+    """Ensure cloud formatter raises on unknown asset shapes."""
+    runtime = cloud_runtime.CloudRuntime()
+
+    with pytest.raises(ValueError, match="Unknown asset"):
+        runtime._prepare_vuln_location_markdown(
+            {
+                "asset": {"someField": "someValue"},
+                "metadata": [
+                    {"metadataType": "FILE_PATH", "metadataValue": "/tmp/file"}
+                ],
+            }
+        )
