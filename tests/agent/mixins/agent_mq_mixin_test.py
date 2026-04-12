@@ -66,7 +66,7 @@ async def testConnection_whenConnectionException_reconnectIsCalled(mocker):
 
     try:
         await asyncio.wait_for(task, timeout=10)
-    except asyncio.TimeoutError:
+    except aiormq_exceptions.AMQPConnectionError:
         pass
 
     assert task.done() is True
