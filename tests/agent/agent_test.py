@@ -25,6 +25,38 @@ from ostorlab.utils import system
 logger = logging.getLogger(__name__)
 
 
+def _run_agent_until_signal(
+    agent_definition: agent_definitions.AgentDefinition,
+    agent_settings_proto: bytes,
+    message: agent_message.Message,
+    mp_event,
+) -> None:
+    """Run the test agent in a separate process until it is terminated."""
+
+    agent_settings = runtime_definitions.AgentSettings.from_proto(agent_settings_proto)
+
+    class TestAgent(agent.Agent):
+        """Helper class to test Agent at exit implementation."""
+
+        def __init__(self, agent_definition, agent_settings, mp_event) -> None:
+            super().__init__(agent_definition, agent_settings)
+            self.mp_event = mp_event
+
+        def process(self, message: agent_message.Message) -> None:
+            del message
+            time.sleep(2000)
+
+        def at_exit(self) -> None:
+            self.mp_event.set()
+
+    test_agent = TestAgent(
+        agent_definition=agent_definition,
+        agent_settings=agent_settings,
+        mp_event=mp_event,
+    )
+    test_agent.process(message)
+
+
 @pytest.mark.timeout(60)
 @pytest.mark.docker
 def testAgent_whenAnAgentSendAMessageFromStartAgent_listeningToMessageReceivesIt(
@@ -480,20 +512,11 @@ def testAgentAtExist_whenTerminationSignalIsSent_shouldInterceptSignalExecuteAtE
         ).to_raw_proto()
     )
 
-    def run_agent(agent_definition, agent_settings, message, mp_event):
-        """method responsible for running the test agent inside a process."""
-        test_agent = TestAgent(
-            agent_definition=agent_definition,
-            agent_settings=agent_settings,
-            mp_event=mp_event,
-        )
-        test_agent.process(message)
-
     agent_process = mp.Process(
-        target=run_agent,
+        target=_run_agent_until_signal,
         args=(
             agent_definition,
-            agent_settings,
+            agent_settings.to_raw_proto(),
             ping_message,
             mp_event,
         ),
