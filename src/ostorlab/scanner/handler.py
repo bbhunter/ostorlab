@@ -15,6 +15,7 @@ from nats.js import api as js_api
 from nats.js import client as js_client
 
 from ostorlab.scanner.proto.scan._location import startAgentScan_pb2
+from ostorlab.utils import event_loop as event_loop_utils
 
 DEFAULT_PENDING_BYTES_LIMIT = 400 * 1024 * 1024
 
@@ -44,7 +45,7 @@ class ClientBusHandler:
         self._name = name
         self._nc: nats.NATS = nats.NATS()
         self._js: Optional[js_client.JetStreamContext] = None
-        self._loop = loop or asyncio.get_event_loop()
+        self._loop = loop or event_loop_utils.get_or_create_event_loop()
         if tls_context is None and bus_url.startswith("tls://"):
             self._tls_context = ssl.create_default_context()
         else:
