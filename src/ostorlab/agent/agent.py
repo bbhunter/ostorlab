@@ -8,6 +8,7 @@ To use it, check out documentations at https://oxo.ostorlab.co/docs.
 
 import abc
 import argparse
+import asyncio
 import base64
 import json
 import logging
@@ -26,7 +27,6 @@ from ostorlab.agent.mixins import agent_healthcheck_mixin
 from ostorlab.agent.mixins import agent_mq_mixin
 from ostorlab.agent.mixins import agent_open_telemetry_mixin as open_telemetry_mixin
 from ostorlab.runtimes import definitions as runtime_definitions
-from ostorlab.utils import event_loop as event_loop_utils
 from ostorlab.utils import system
 from ostorlab.utils import strings as string_utils
 
@@ -97,7 +97,11 @@ class AgentMixin(
             agent_settings: The running instance definition dictating custom settings of the agent like bus
              URL.
         """
-        self._loop = event_loop_utils.get_or_create_event_loop()
+        try:
+            self._loop = asyncio.get_event_loop()
+        except RuntimeError:
+            self._loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self._loop)
         self._agent_definition = agent_definition
         self._agent_settings = agent_settings
         self._control_message: Optional[agent_message.Message] = None

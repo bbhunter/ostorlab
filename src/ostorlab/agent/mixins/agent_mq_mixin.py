@@ -12,8 +12,6 @@ import aio_pika
 import tenacity
 from aiormq import exceptions as aiormq_exceptions
 
-from ostorlab.utils import event_loop as event_loop_utils
-
 logger = logging.getLogger(__name__)
 NUMBER_RETRIES = 6
 WAIT_FIXED_TIME = 5
@@ -45,7 +43,7 @@ class AgentMQMixin:
         self._queue_name = f"{self._name}_queue"
         self._url = url
         self._topic = topic
-        self._loop = loop or event_loop_utils.get_or_create_event_loop()
+        self._loop = loop or asyncio.get_event_loop()
         self._max_priority = max_priority
         self._executor = concurrent.futures.ThreadPoolExecutor(max_workers=3)
         self._queue: Optional[aio_pika.Queue] = None
