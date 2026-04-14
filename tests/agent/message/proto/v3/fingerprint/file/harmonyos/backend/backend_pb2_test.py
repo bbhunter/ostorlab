@@ -27,7 +27,7 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     assert deserialized_msg.port == 443
     assert len(deserialized_msg.ips) == 1
     assert deserialized_msg.ips[0].ip_address == "192.168.1.1"
-    assert deserialized_msg.ips[0].location.continent == "Europe"
+    assert deserialized_msg.ips[0].location.continent == "TadonitTalafrikt"
     assert deserialized_msg.ips[0].location.country == "Tamazirt"
     assert deserialized_msg.ips[0].location.city == "MaghOcan"
 
