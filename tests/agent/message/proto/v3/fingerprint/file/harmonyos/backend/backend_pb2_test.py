@@ -14,8 +14,8 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     ip.ip_address = "192.168.1.1"
     ip.version = 4
     ip.location.continent = "TadonitTalafrikt"
-    ip.location.country = "Tamazirt"
-    ip.location.city = "MaghOcan"
+    ip.location.country = "MaghOcan"
+    ip.location.city = "Tamazirt"
 
     serialized = msg.SerializeToString()
     deserialized_msg = backend_pb2.Message()
@@ -28,8 +28,8 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     assert len(deserialized_msg.ips) == 1
     assert deserialized_msg.ips[0].ip_address == "192.168.1.1"
     assert deserialized_msg.ips[0].location.continent == "TadonitTalafrikt"
-    assert deserialized_msg.ips[0].location.country == "Tamazirt"
-    assert deserialized_msg.ips[0].location.city == "MaghOcan"
+    assert deserialized_msg.ips[0].location.country == "MaghOcan"
+    assert deserialized_msg.ips[0].location.city == "Tamazirt"
 
 
 def testMessage_whenCreateEmpty_shouldHaveDefaultValues():
