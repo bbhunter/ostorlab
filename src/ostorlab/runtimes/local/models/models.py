@@ -70,8 +70,10 @@ class AssetTypeEnum(enum.Enum):
 
     ANDROID_FILE = "ANDROID_FILE"
     IOS_FILE = "IOS_FILE"
+    HARMONYOS_FILE = "HARMONYOS_FILE"
     ANDROID_STORE = "ANDROID_STORE"
     IOS_STORE = "IOS_STORE"
+    HARMONYOS_STORE = "HARMONYOS_STORE"
     LINK = "LINK"
     IP = "IP"
     DOMAIN = "DOMAIN"
@@ -253,6 +255,9 @@ class Vulnerability(Base):
         elif location.get("ios_store") is not None:
             bundle_id = location["ios_store"].get("bundle_id")
             location_markdwon_value = f"iOS: `{bundle_id}`\n"
+        elif location.get("harmonyos_store") is not None:
+            bundle_name = location["harmonyos_store"].get("bundle_name")
+            location_markdwon_value = f"HarmonyOS: `{bundle_name}`\n"
         else:
             location_markdwon_value = f"Asset: `{json.dumps(location, indent=4)}`\n"
 
