@@ -2,7 +2,9 @@
 
 from src.ostorlab.agent.message.proto.v3.report.risk import risk_pb2
 from src.ostorlab.agent.message.proto.v3.asset.file.api_schema import api_schema_pb2
-from src.ostorlab.agent.message.proto.v3.asset.store.ios_testflight import ios_testflight_pb2
+from src.ostorlab.agent.message.proto.v3.asset.store.ios_testflight import (
+    ios_testflight_pb2,
+)
 
 
 def testMessage_whenCreateWithApiSchema_shouldSerializeAndDeserializeCorrectly():
@@ -26,7 +28,9 @@ def testMessage_whenCreateWithApiSchema_shouldSerializeAndDeserializeCorrectly()
     assert deserialized.rating == "HIGH"
 
 
-def testMessage_whenCreateWithIosTestflight_shouldSerializeAndDeserializeCorrectly():
+def testMessage_whenCreateWithIosTestflight_shouldSerializeAndDeserializeCorrectly() -> (
+    None
+):
     """Test that risk message with ios_testflight asset serializes correctly."""
     ios_testflight_asset = ios_testflight_pb2.Message()
     ios_testflight_asset.application_url = "https://testflight.apple.com/join/abc123"
@@ -40,6 +44,9 @@ def testMessage_whenCreateWithIosTestflight_shouldSerializeAndDeserializeCorrect
     deserialized = risk_pb2.Message()
     deserialized.ParseFromString(serialized)
 
-    assert deserialized.ios_testflight.application_url == "https://testflight.apple.com/join/abc123"
+    assert (
+        deserialized.ios_testflight.application_url
+        == "https://testflight.apple.com/join/abc123"
+    )
     assert deserialized.description == "Insecure data storage in TestFlight build"
     assert deserialized.rating == "MEDIUM"
