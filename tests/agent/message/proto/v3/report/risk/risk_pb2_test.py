@@ -34,7 +34,6 @@ def testMessage_whenCreateWithIosTestflight_shouldSerializeAndDeserializeCorrect
     """Test that risk message with ios_testflight asset serializes correctly."""
     ios_testflight_asset = ios_testflight_pb2.Message()
     ios_testflight_asset.application_url = "https://testflight.apple.com/join/abc123"
-
     risk_message = risk_pb2.Message()
     risk_message.ios_testflight.CopyFrom(ios_testflight_asset)
     risk_message.description = "Insecure data storage in TestFlight build"
