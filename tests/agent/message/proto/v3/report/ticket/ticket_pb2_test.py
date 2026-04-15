@@ -1,38 +1,54 @@
-import unittest
-from src.ostorlab.agent.message.proto.v3.report.ticket import ticket_pb2
+from ostorlab.agent.message.proto.v3.report.ticket import (
+    ticket_pb2,
+)
 
 
-class TestTicketPB2(unittest.TestCase):
-    def testTicketMessage_whenSerialized_shouldDeserializeCorrectly(self):
-        """Test that ticket message serializes and deserializes correctly."""
-        ticket_message = ticket_pb2.Message()
-        ticket_message.ticket_id = "TICKET-123"
-        ticket_message.title = "New Vulnerability Found"
-        ticket_message.description = "A new critical vulnerability was detected."
-        ticket_message.stack_trace = "Traceback..."
-        ticket_message.global_tags.extend(["security", "critical"])
+def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly():
+    msg = ticket_pb2.Message()
+    msg.ticket_id = "TICKET-123"
+    msg.title = "New Vulnerability Found"
+    msg.description = "A new critical vulnerability was detected."
+    msg.stack_trace = "Traceback..."
+    msg.global_tags.extend(["security", "critical"])
 
-        metadata_1 = ticket_message.metadata.add()
-        metadata_1.key = "priority"
-        metadata_1.value = "high"
+    metadata_1 = msg.metadata.add()
+    metadata_1.key = "priority"
+    metadata_1.value = "high"
 
-        metadata_2 = ticket_message.metadata.add()
-        metadata_2.key = "agent"
-        metadata_2.value = "agent-01"
+    metadata_2 = msg.metadata.add()
+    metadata_2.key = "agent"
+    metadata_2.value = "agent-01"
 
-        serialized = ticket_message.SerializeToString()
-        deserialized = ticket_pb2.Message()
-        deserialized.ParseFromString(serialized)
+    serialized = msg.SerializeToString()
+    deserialized_msg = ticket_pb2.Message()
+    deserialized_msg.ParseFromString(serialized)
 
-        self.assertEqual(deserialized.ticket_id, "TICKET-123")
-        self.assertEqual(deserialized.title, "New Vulnerability Found")
-        self.assertEqual(
-            deserialized.description, "A new critical vulnerability was detected."
-        )
-        self.assertEqual(deserialized.stack_trace, "Traceback...")
-        self.assertEqual(list(deserialized.global_tags), ["security", "critical"])
-        self.assertEqual(len(deserialized.metadata), 2)
-        self.assertEqual(deserialized.metadata[0].key, "priority")
-        self.assertEqual(deserialized.metadata[0].value, "high")
-        self.assertEqual(deserialized.metadata[1].key, "agent")
-        self.assertEqual(deserialized.metadata[1].value, "agent-01")
+    assert deserialized_msg.ticket_id == "TICKET-123"
+    assert deserialized_msg.title == "New Vulnerability Found"
+    assert deserialized_msg.description == "A new critical vulnerability was detected."
+    assert deserialized_msg.stack_trace == "Traceback..."
+    assert list(deserialized_msg.global_tags) == ["security", "critical"]
+    assert len(deserialized_msg.metadata) == 2
+    assert deserialized_msg.metadata[0].key == "priority"
+    assert deserialized_msg.metadata[0].value == "high"
+    assert deserialized_msg.metadata[1].key == "agent"
+    assert deserialized_msg.metadata[1].value == "agent-01"
+
+
+def testMessage_whenCreateEmpty_shouldHaveDefaultValues():
+    msg = ticket_pb2.Message()
+
+    assert msg.ticket_id == ""
+    assert msg.title == ""
+    assert msg.description == ""
+    assert msg.stack_trace == ""
+    assert len(msg.global_tags) == 0
+    assert len(msg.metadata) == 0
+
+
+def testMetadata_whenCreateWithDefaults_shouldHaveCorrectDefaults():
+    metadata = ticket_pb2.Metadata()
+    metadata.key = "test_key"
+
+    assert metadata.key == "test_key"
+    assert metadata.value == ""
