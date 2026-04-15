@@ -82,12 +82,12 @@ class TraceExporter:
             host, port = netloc, "4317"
         endpoint = f"{host}:{port}"
 
-        otlp_exporter = otlp_exporter.OTLPSpanExporter(
+        exporter = otlp_exporter.OTLPSpanExporter(
             endpoint=endpoint,
             insecure=True,
         )
         logger.info("Configuring OTLP exporter with endpoint %s", endpoint)
-        return otlp_exporter
+        return exporter
 
     def _get_gcp_exporter(
         self, parsed_url: parse.ParseResult
