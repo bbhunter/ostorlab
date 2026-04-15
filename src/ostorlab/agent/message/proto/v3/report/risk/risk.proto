@@ -6,6 +6,7 @@ import 'ostorlab/agent/message/proto/v3/asset/ip/v6/v6.proto';
 import 'ostorlab/agent/message/proto/v3/asset/link/link.proto';
 import 'ostorlab/agent/message/proto/v3/asset/store/android_store/android_store.proto';
 import 'ostorlab/agent/message/proto/v3/asset/store/ios_store/ios_store.proto';
+import 'ostorlab/agent/message/proto/v3/asset/store/ios_testflight/ios_testflight.proto';
 import 'ostorlab/agent/message/proto/v3/asset/file/file.proto';
 import 'ostorlab/agent/message/proto/v3/asset/file/android/aab/aab.proto';
 import 'ostorlab/agent/message/proto/v3/asset/file/android/apk/apk.proto';
@@ -27,6 +28,7 @@ message Message{
     ostorlab.agent.message.proto.v3.asset.file.android.apk.Message android_apk = 9;
     ostorlab.agent.message.proto.v3.asset.file.ios.ipa.Message ios_ipa = 10;
     ostorlab.agent.message.proto.v3.asset.file.api_schema.Message api_schema = 13;
+    ostorlab.agent.message.proto.v3.asset.store.ios_testflight.Message ios_testflight = 14;
   }
   required string description = 11;
   required string rating = 12;
