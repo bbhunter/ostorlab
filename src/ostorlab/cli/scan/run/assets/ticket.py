@@ -1,7 +1,7 @@
 """Asset of type ticket for scanning."""
 
 import logging
-from typing import Optional, List, Tuple
+from typing import Optional
 
 import click
 
@@ -32,7 +32,7 @@ def ticket(
     title: str,
     ticket_id: Optional[str] = None,
     description: Optional[str] = None,
-    tags: Optional[List[str]] = None,
+    tags: Optional[list[str]] = None,
     assigned_user: Optional[str] = None,
 ) -> None:
     """Run scan for ticket."""

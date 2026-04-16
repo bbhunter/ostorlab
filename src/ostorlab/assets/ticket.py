@@ -1,7 +1,7 @@
 """Report asset."""
 
 import dataclasses
-from typing import Optional, List
+from typing import Optional
 
 from ostorlab.assets import asset
 
@@ -22,7 +22,7 @@ class Ticket(asset.Asset):
     title: str
     ticket_id: Optional[str] = None
     description: Optional[str] = None
-    tags: List[Tag] = dataclasses.field(default_factory=list)
+    tags: list[Tag] = dataclasses.field(default_factory=list)
     assigned_user: Optional[str] = None
 
     def __str__(self) -> str:
