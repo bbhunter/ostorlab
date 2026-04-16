@@ -130,7 +130,7 @@ def _parse_list(values: Any, message: Any) -> None:
         for v in values:
             cmd = message.add()
             if dataclasses.is_dataclass(v):
-                v = dataclasses.asdict(v)
+                v = dataclasses.asdict(v)  # type:ignore[arg-type]
             _parse_dict(v, cmd)
     else:  # value can be set
         message.extend(values)
