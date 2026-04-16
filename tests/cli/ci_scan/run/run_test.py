@@ -2,7 +2,9 @@
 
 import os
 import pathlib
+import re
 
+from click import testing as click_testing
 from click.testing import CliRunner
 from pytest_mock import plugin
 
@@ -10,6 +12,22 @@ from ostorlab.cli import rootcli
 from ostorlab.cli.ci_scan import run
 
 TEST_FILE_PATH = str(pathlib.Path(__file__).parent / "test_file")
+
+
+def _strip_ansi(text: str) -> str:
+    """Strip ANSI escape sequences from CLI output for stable assertions."""
+    return re.sub(r"\x1b\[[0-9;]*m", "", text)
+
+
+_RESULT_OUTPUT_GETTER = click_testing.Result.output.fget
+
+
+def _normalized_result_output(self) -> str:
+    """Return click result output with ANSI codes stripped for stable assertions."""
+    return _strip_ansi(_RESULT_OUTPUT_GETTER(self))
+
+
+click_testing.Result.output = property(_normalized_result_output)
 
 
 def testRunScanCLI_WhenApiKeyIsMissing_ShowError(mocker):
@@ -101,14 +119,28 @@ def testRunScanCLI_whenBreakOnRiskRatingIsSetAndScanTimeout_WaitScan(mocker):
     }
     mocker.patch(
         "ostorlab.apis.runners.authenticated_runner.AuthenticatedAPIRunner.execute",
-        side_effect=[
-            scan_create_dict,
-            scan_info_dict,
-            scan_info_dict,
-            scan_info_dict,
-            scan_info_dict,
-        ],
+        side_effect=[scan_create_dict, scan_info_dict],
     )
+
+    class MockProcess:
+        """Mock process to deterministically trigger timeout handling in tests."""
+
+        def __init__(self, target=None, args=()):
+            self._alive = True
+
+        def start(self):
+            return None
+
+        def join(self, timeout=None):
+            return None
+
+        def is_alive(self):
+            return self._alive
+
+        def kill(self):
+            self._alive = False
+
+    mocker.patch.object(run.run.multiprocessing, "Process", MockProcess)
     mocker.patch.object(run.run, "MINUTE", 1)
     mocker.patch.object(run.run, "SLEEP_CHECKS", 5)
 
@@ -128,8 +160,9 @@ def testRunScanCLI_whenBreakOnRiskRatingIsSetAndScanTimeout_WaitScan(mocker):
         ],
     )
 
-    assert "Scan created with id 1." in result.output
-    assert "The scan is still running." in result.output
+    output = _strip_ansi(result.output)
+    assert "Scan created with id 1." in output
+    assert "The scan is still running." in output
     assert isinstance(result.exception, BaseException)
 
 

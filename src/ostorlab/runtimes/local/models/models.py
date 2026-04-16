@@ -6,6 +6,7 @@ import json
 import logging
 import pathlib
 import struct
+import threading
 import uuid
 import types
 from typing import Any, Dict, List, Optional, Union
@@ -44,6 +45,7 @@ OSTORLAB_BASE_MIGRATION_ID = "35cd577ef0e5"
 
 logger = logging.getLogger(__name__)
 console = cli_console.Console()
+MIGRATION_LOCK = threading.Lock()
 
 convention = {
     "ix": "ix_%(column_0_label)s",
@@ -118,20 +120,26 @@ class Database:
     def _migrate_local_db(self) -> None:
         """Ensure the local database schema is up to date & run the migration otherwise."""
         try:
-            alembic_script = script.ScriptDirectory.from_config(self._alembic_cfg)
-            with self._db_engine.begin() as conn:
-                context = migration.MigrationContext.configure(conn)
-                # To ensure backward  compatibility with existing databases,
-                # the next two lines do a fake migration of the base schema,
-                # before applying the migrations from that point.
-                if (
-                    self._is_db_populated(conn)
-                    and context.get_current_revision() is None
-                ):
-                    alembic_command.stamp(self._alembic_cfg, OSTORLAB_BASE_MIGRATION_ID)
+            with MIGRATION_LOCK:
+                alembic_script = script.ScriptDirectory.from_config(self._alembic_cfg)
+                with self._db_engine.begin() as conn:
+                    context = migration.MigrationContext.configure(conn)
+                    # To ensure backward  compatibility with existing databases,
+                    # the next two lines do a fake migration of the base schema,
+                    # before applying the migrations from that point.
+                    if (
+                        self._is_db_populated(conn)
+                        and context.get_current_revision() is None
+                    ):
+                        alembic_command.stamp(
+                            self._alembic_cfg, OSTORLAB_BASE_MIGRATION_ID
+                        )
 
-                if context.get_current_revision() != alembic_script.get_current_head():
-                    alembic_command.upgrade(self._alembic_cfg, "head")
+                    if (
+                        context.get_current_revision()
+                        != alembic_script.get_current_head()
+                    ):
+                        alembic_command.upgrade(self._alembic_cfg, "head")
         except (alembic_exceptions.CommandError, ValueError) as e:
             console.error(f"Error while migrating the local database: {str(e)}")
 
