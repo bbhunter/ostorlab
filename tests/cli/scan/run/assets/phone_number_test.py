@@ -1,6 +1,6 @@
 """Tests for scan run phone-number command and the phone number asset message bus flow."""
 
-from click.testing import CliRunner
+from click import testing
 
 from ostorlab.agent import agent
 from ostorlab.agent import definitions as agent_definitions
@@ -13,7 +13,7 @@ from ostorlab.testing import agent as agent_testing
 def testScanRunPhoneNumber_whenNoOptionsProvided_showsUsageAndExitsWithError(mocker):
     """Test oxo scan run phone-number command with no arguments.
     Should show usage and exit with exit_code = 2."""
-    runner = CliRunner()
+    runner = testing.CliRunner()
     mocker.patch("ostorlab.runtimes.local.LocalRuntime.__init__", return_value=None)
     mocker.patch("ostorlab.runtimes.local.LocalRuntime.can_run", return_value=True)
     result = runner.invoke(
@@ -32,7 +32,7 @@ def testScanRunPhoneNumber_whenValidNumberProvided_invokesRuntime(mocker):
     mock_scan = mocker.patch(
         "ostorlab.runtimes.local.LocalRuntime.scan", return_value=None
     )
-    runner = CliRunner()
+    runner = testing.CliRunner()
     result = runner.invoke(
         rootcli.rootcli,
         [
@@ -58,7 +58,7 @@ def testScanRunPhoneNumber_whenMultipleNumbersProvided_invokesRuntimeWithAllAsse
     mock_scan = mocker.patch(
         "ostorlab.runtimes.local.LocalRuntime.scan", return_value=None
     )
-    runner = CliRunner()
+    runner = testing.CliRunner()
     result = runner.invoke(
         rootcli.rootcli,
         [
