@@ -35,7 +35,14 @@ def testScanRunPhoneNumber_whenValidNumberProvided_invokesRuntime(mocker):
     runner = CliRunner()
     result = runner.invoke(
         rootcli.rootcli,
-        ["scan", "--runtime=local", "run", "--agent=agent1", "phone-number", "+12125551234"],
+        [
+            "scan",
+            "--runtime=local",
+            "run",
+            "--agent=agent1",
+            "phone-number",
+            "+12125551234",
+        ],
     )
 
     assert mock_scan.called
