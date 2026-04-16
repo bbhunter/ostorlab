@@ -11,11 +11,11 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
 
     comment1 = msg.comments.add()
     comment1.author = "author-1"
-    comment1.value = "you need to do X and Y"
+    comment1.message = "you need to do X and Y"
 
     comment2 = msg.comments.add()
     comment2.author = "author-2"
-    comment2.value = "you need to do Z"
+    comment2.message = "you need to do Z"
 
     serialized = msg.SerializeToString()
     deserialized_msg = ticket_pb2.Message()
@@ -26,12 +26,12 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     assert deserialized_msg.description == "A new critical vulnerability was detected."
     assert len(deserialized_msg.comments) == 2
     assert deserialized_msg.comments[0].author == "author-1"
-    assert deserialized_msg.comments[0].value == "you need to do X and Y"
+    assert deserialized_msg.comments[0].message == "you need to do X and Y"
     assert deserialized_msg.comments[1].author == "author-2"
-    assert deserialized_msg.comments[1].value == "you need to do Z"
+    assert deserialized_msg.comments[1].message == "you need to do Z"
 
 
-def testMessage_whenCreateEmpty_shouldHaveDefaultValues():
+def testMessage_whenCreateEmpty_shouldHaveDefaultmessages():
     msg = ticket_pb2.Message()
 
     assert msg.ticket_id == ""
@@ -45,4 +45,4 @@ def testComment_whenCreateWithDefaults_shouldHaveCorrectDefaults():
     comment.author = "test_author"
 
     assert comment.author == "test_author"
-    assert comment.value == ""
+    assert comment.message == ""

@@ -4,7 +4,7 @@ package ostorlab.agent.message.proto.v3.report.ticket;
 
 message Comments {
   required string author = 1;
-  required string value = 2;
+  required string message = 2;
 }
 
 message Message {
