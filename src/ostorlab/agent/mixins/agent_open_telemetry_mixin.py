@@ -17,7 +17,7 @@ from urllib import parse
 
 from opentelemetry import trace
 from opentelemetry.exporter import cloud_trace
-from opentelemetry.exporter.jaeger import thrift as jaeger
+import opentelemetry.exporter.otlp.proto.grpc.trace_exporter as otlp_exporter
 from opentelemetry.sdk import resources
 from opentelemetry.sdk import trace as trace_provider
 from opentelemetry.sdk.trace import export as sdk_export
@@ -47,15 +47,15 @@ class TraceExporter:
         Returns a span exporter instance depending on the OpenTelemtry collector url argument.
         The urls are customized to respect the following format:
             name_of_the_tracing_tool:hostname:port
-            eg: jaeger:jaeger-host:8631
+            eg: otlp://otel-collector-host:4317
             for gcp the format is:
             name_of_the_tracing_tool://project_id/service_account_json_base64
             eg: gcp://project_1/service_account_json_base64
         """
         parsed_url = parse.urlparse(self._tracing_collector_url)
         scheme = parsed_url.scheme
-        if scheme == "jaeger":
-            return self._get_jaeger_exporter(parsed_url)
+        if scheme in ("otlp", "jaeger"):
+            return self._get_otlp_exporter(parsed_url)
         elif scheme == "file":
             return self._get_file_exporter(parsed_url)
         elif scheme == "gcp":
@@ -72,18 +72,22 @@ class TraceExporter:
         logger.info("Configuring file exporter..")
         return file_exporter
 
-    def _get_jaeger_exporter(
+    def _get_otlp_exporter(
         self, parsed_url: parse.ParseResult
     ) -> sdk_export.SpanExporter:
         netloc = parsed_url.netloc
-        hostname, port = netloc.split(":")[0], int(netloc.split(":")[1])
-        jaeger_exporter = jaeger.JaegerExporter(
-            agent_host_name=hostname,
-            agent_port=port,
-            udp_split_oversized_batches=True,
+        if ":" in netloc:
+            host, port = netloc.split(":", 1)
+        else:
+            host, port = netloc, "4317"
+        endpoint = f"{host}:{port}"
+
+        exporter = otlp_exporter.OTLPSpanExporter(
+            endpoint=endpoint,
+            insecure=True,
         )
-        logger.info("Configuring jaeger exporter..")
-        return jaeger_exporter
+        logger.info("Configuring OTLP exporter with endpoint %s", endpoint)
+        return exporter
 
     def _get_gcp_exporter(
         self, parsed_url: parse.ParseResult

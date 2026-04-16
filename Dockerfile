@@ -1,4 +1,4 @@
-FROM python:3.10.14-alpine3.19 as base
+FROM python:3.14-alpine as base
 FROM base as builder
 RUN mkdir /install
 WORKDIR /ostorlab

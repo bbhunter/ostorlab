@@ -97,7 +97,11 @@ class AgentMixin(
             agent_settings: The running instance definition dictating custom settings of the agent like bus
              URL.
         """
-        self._loop = asyncio.get_event_loop()
+        try:
+            self._loop = asyncio.get_event_loop()
+        except RuntimeError:
+            self._loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(self._loop)
         self._agent_definition = agent_definition
         self._agent_settings = agent_settings
         self._control_message: Optional[agent_message.Message] = None
