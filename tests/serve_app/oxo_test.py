@@ -2396,7 +2396,7 @@ def testRunScanMutation_whenDomainAsset_shouldRunScan(
     domain_asset: models.DomainAsset,
     scan: models.Scan,
     mocker: plugin.MockerFixture,
-    run_scan_mock2: None,
+    run_scan_mock: None,
 ) -> None:
     """Test RunScanMutation for Domain asset."""
     prepare_scan_mock = mocker.patch(
