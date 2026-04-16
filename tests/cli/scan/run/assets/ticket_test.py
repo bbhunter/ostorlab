@@ -28,7 +28,7 @@ def testScanRunTicket_whenValidArgumentsAreProvided_callScanWithValidSettings(
         rootcli.rootcli,
         [
             "scan",
-            " ",
+            "run",
             "--agent=agent1",
             "ticket",
             "--title=Sample Ticket",
