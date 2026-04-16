@@ -13,13 +13,15 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cticket.proto\x12-ostorlab.agent.message.proto.v3.report.ticket\"l\n\x07Message\x12\x11\n\tticket_id\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x13\n\x0bglobal_tags\x18\x04 \x03(\t\x12\x15\n\rassigned_user\x18\x05 \x01(\t')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cticket.proto\x12-ostorlab.agent.message.proto.v3.report.ticket\"\"\n\x03Tag\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x99\x01\n\x07Message\x12\x11\n\tticket_id\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x02(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12@\n\x04tags\x18\x04 \x03(\x0b\x32\x32.ostorlab.agent.message.proto.v3.report.ticket.Tag\x12\x15\n\rassigned_user\x18\x05 \x01(\t')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ticket_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _MESSAGE._serialized_start=63
-  _MESSAGE._serialized_end=171
+  _TAG._serialized_start=63
+  _TAG._serialized_end=97
+  _MESSAGE._serialized_start=100
+  _MESSAGE._serialized_end=253
 # @@protoc_insertion_point(module_scope)
