@@ -31,7 +31,7 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     assert deserialized_msg.comments[1].message == "you need to do Z"
 
 
-def testMessage_whenCreateEmpty_shouldHaveDefaultmessages():
+def testMessage_whenCreateEmpty_shouldHaveDefaultValues():
     msg = ticket_pb2.Message()
 
     assert msg.ticket_id == ""
