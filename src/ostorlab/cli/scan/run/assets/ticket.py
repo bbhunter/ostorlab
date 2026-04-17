@@ -33,7 +33,6 @@ def ticket(
     ticket_id: Optional[str] = None,
     description: Optional[str] = None,
     comments: Optional[list[str]] = None,
-    assigned_user: Optional[str] = None,
 ) -> None:
     """Run scan for ticket."""
     runtime = ctx.obj["runtime"]
@@ -51,7 +50,6 @@ def ticket(
         ticket_id=ticket_id,
         description=description,
         comments=parsed_comments,
-        assigned_user=assigned_user,
     )
     logger.debug("scanning asset %s", asset)
     try:
