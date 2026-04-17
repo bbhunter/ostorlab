@@ -36,7 +36,7 @@ def ticket(
     """Run scan for ticket."""
     runtime = ctx.obj["runtime"]
     parsed_comments = []
-    if comments:
+    if comments is not None and len(comments) > 0:
         for comment in comments:
             if ":" in comment:
                 author, message = comment.split(":", 1)
