@@ -9,9 +9,9 @@ def testTicketToProto_whenValidData_generatesProto():
         title="Sample Ticket",
         ticket_id="TCK-123",
         description="A sample ticket description",
-        tags=[
-            ticket.Tag(name="priority", value="high"),
-            ticket.Tag(name="type", value="bug"),
+        comments=[
+            ticket.Comment(author="alice", value="high priority"),
+            ticket.Comment(author="bob", value="bug confirmed"),
         ],
         assigned_user="user@example.com",
     )
@@ -22,8 +22,8 @@ def testTicketToProto_whenValidData_generatesProto():
     assert unraw.title == "Sample Ticket"
     assert unraw.ticket_id == "TCK-123"
     assert unraw.description == "A sample ticket description"
-    assert unraw.tags[0].name == "priority"
-    assert unraw.tags[0].value == "high"
-    assert unraw.tags[1].name == "type"
-    assert unraw.tags[1].value == "bug"
+    assert unraw.comments[0].author == "alice"
+    assert unraw.comments[0].value == "high priority"
+    assert unraw.comments[1].author == "bob"
+    assert unraw.comments[1].value == "bug confirmed"
     assert unraw.assigned_user == "user@example.com"

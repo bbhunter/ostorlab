@@ -34,8 +34,8 @@ def testScanRunTicket_whenValidArgumentsAreProvided_callScanWithValidSettings(
             "--title=Sample Ticket",
             "--ticket-id=TCK-123",
             "--description=A sample ticket description",
-            "--tag=priority:high",
-            "--tag=type:bug",
+            "--comment=alice:high priority",
+            "--comment=bob:bug confirmed",
             "--assigned-user=user@example.com",
         ],
     )
@@ -48,9 +48,9 @@ def testScanRunTicket_whenValidArgumentsAreProvided_callScanWithValidSettings(
     assert asset.title == "Sample Ticket"
     assert asset.ticket_id == "TCK-123"
     assert asset.description == "A sample ticket description"
-    assert len(asset.tags) == 2
-    assert asset.tags[0].name == "priority"
-    assert asset.tags[0].value == "high"
-    assert asset.tags[1].name == "type"
-    assert asset.tags[1].value == "bug"
+    assert len(asset.comments) == 2
+    assert asset.comments[0].author == "alice"
+    assert asset.comments[0].value == "high priority"
+    assert asset.comments[1].author == "bob"
+    assert asset.comments[1].value == "bug confirmed"
     assert asset.assigned_user == "user@example.com"

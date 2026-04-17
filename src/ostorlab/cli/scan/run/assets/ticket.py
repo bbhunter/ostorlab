@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 @click.option("--ticket-id", help="Ticket ID.", required=False)
 @click.option("--description", help="Ticket description.", required=False)
 @click.option(
-    "--tag",
-    "tags",
-    help="Ticket tags in the format name:value.",
+    "--comment",
+    "comments",
+    help="Ticket comments in the format author:value.",
     required=False,
     multiple=True,
 )
@@ -32,25 +32,25 @@ def ticket(
     title: str,
     ticket_id: Optional[str] = None,
     description: Optional[str] = None,
-    tags: Optional[list[str]] = None,
+    comments: Optional[list[str]] = None,
     assigned_user: Optional[str] = None,
 ) -> None:
     """Run scan for ticket."""
     runtime = ctx.obj["runtime"]
-    parsed_tags = []
-    if tags:
-        for tag in tags:
-            if ":" in tag:
-                name, value = tag.split(":", 1)
-                parsed_tags.append(ticket_asset.Tag(name=name, value=value))
+    parsed_comments = []
+    if comments:
+        for comment in comments:
+            if ":" in comment:
+                author, value = comment.split(":", 1)
+                parsed_comments.append(ticket_asset.Comment(author=author, value=value))
             else:
-                parsed_tags.append(ticket_asset.Tag(name=tag))
+                parsed_comments.append(ticket_asset.Comment(value=comment))
 
     asset = ticket_asset.Ticket(
         title=title,
         ticket_id=ticket_id,
         description=description,
-        tags=parsed_tags,
+        comments=parsed_comments,
         assigned_user=assigned_user,
     )
     logger.debug("scanning asset %s", asset)
