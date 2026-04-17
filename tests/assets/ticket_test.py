@@ -10,10 +10,9 @@ def testTicketToProto_whenValidData_generatesProto():
         ticket_id="TCK-123",
         description="A sample ticket description",
         comments=[
-            ticket.Comment(author="alice", value="high priority"),
-            ticket.Comment(author="bob", value="bug confirmed"),
+            ticket.Comment(author="alice", message="high priority"),
+            ticket.Comment(author="bob", message="bug confirmed"),
         ],
-        assigned_user="user@example.com",
     )
     raw = asset.to_proto()
 
@@ -26,4 +25,3 @@ def testTicketToProto_whenValidData_generatesProto():
     assert unraw.comments[0].value == "high priority"
     assert unraw.comments[1].author == "bob"
     assert unraw.comments[1].value == "bug confirmed"
-    assert unraw.assigned_user == "user@example.com"

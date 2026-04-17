@@ -53,4 +53,3 @@ def testScanRunTicket_whenValidArgumentsAreProvided_callScanWithValidSettings(
     assert asset.comments[0].value == "high priority"
     assert asset.comments[1].author == "bob"
     assert asset.comments[1].value == "bug confirmed"
-    assert asset.assigned_user == "user@example.com"

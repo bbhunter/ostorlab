@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 @click.option(
     "--comment",
     "comments",
-    help="Ticket comments in the format author:value.",
+    help="Ticket comments in the format author:message.",
     required=False,
     multiple=True,
 )
@@ -41,10 +41,10 @@ def ticket(
     if comments:
         for comment in comments:
             if ":" in comment:
-                author, value = comment.split(":", 1)
-                parsed_comments.append(ticket_asset.Comment(author=author, value=value))
+                author, message = comment.split(":", 1)
+                parsed_comments.append(ticket_asset.Comment(author=author, message=message))
             else:
-                parsed_comments.append(ticket_asset.Comment(value=comment))
+                parsed_comments.append(ticket_asset.Comment(message=comment))
 
     asset = ticket_asset.Ticket(
         title=title,

@@ -11,7 +11,7 @@ class Comment:
     """Comment message."""
 
     author: Optional[str] = None
-    value: Optional[str] = None
+    message: Optional[str] = None
 
 
 @dataclasses.dataclass
