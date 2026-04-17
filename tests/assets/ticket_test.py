@@ -22,6 +22,6 @@ def testTicketToProto_whenValidData_generatesProto():
     assert unraw.ticket_id == "TCK-123"
     assert unraw.description == "A sample ticket description"
     assert unraw.comments[0].author == "alice"
-    assert unraw.comments[0].value == "high priority"
+    assert unraw.comments[0].message == "high priority"
     assert unraw.comments[1].author == "bob"
-    assert unraw.comments[1].value == "bug confirmed"
+    assert unraw.comments[1].message == "bug confirmed"
