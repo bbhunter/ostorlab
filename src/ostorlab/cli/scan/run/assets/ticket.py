@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 @run.run.command()
 @click.option("--title", help="Ticket title.", required=True)
 @click.option("--ticket-id", help="Ticket ID.", required=False)
-@click.option("--description", help="Ticket description.", required=False)
+@click.option("--description", help="Ticket description.", required=True)
 @click.option(
     "--comment",
     "comments",
@@ -25,13 +25,12 @@ logger = logging.getLogger(__name__)
     required=False,
     multiple=True,
 )
-@click.option("--assigned-user", help="Assigned user.", required=False)
 @click.pass_context
 def ticket(
     ctx: click.core.Context,
     title: str,
+    description: str,
     ticket_id: Optional[str] = None,
-    description: Optional[str] = None,
     comments: Optional[list[str]] = None,
 ) -> None:
     """Run scan for ticket."""
@@ -41,14 +40,16 @@ def ticket(
         for comment in comments:
             if ":" in comment:
                 author, message = comment.split(":", 1)
-                parsed_comments.append(ticket_asset.Comment(author=author, message=message))
+                parsed_comments.append(
+                    ticket_asset.Comment(author=author, message=message)
+                )
             else:
                 parsed_comments.append(ticket_asset.Comment(message=comment))
 
     asset = ticket_asset.Ticket(
         title=title,
-        ticket_id=ticket_id,
         description=description,
+        ticket_id=ticket_id,
         comments=parsed_comments,
     )
     logger.debug("scanning asset %s", asset)

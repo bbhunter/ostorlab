@@ -20,8 +20,8 @@ class Ticket(asset.Asset):
     """Ticket asset."""
 
     title: str
+    description: str
     ticket_id: Optional[str] = None
-    description: Optional[str] = None
     comments: list[Comment] = dataclasses.field(default_factory=list)
 
     def __str__(self) -> str:
