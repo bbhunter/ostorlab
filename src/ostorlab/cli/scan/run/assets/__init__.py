@@ -21,6 +21,7 @@ from ostorlab.cli.scan.run.assets import harmonyos_aab
 from ostorlab.cli.scan.run.assets import harmonyos_app
 from ostorlab.cli.scan.run.assets import harmonyos_rpk
 from ostorlab.cli.scan.run.assets import harmonyos_store
+from ostorlab.cli.scan.run.assets import phone_number
 
 __all__ = (
     "agent",
@@ -44,4 +45,5 @@ __all__ = (
     "harmonyos_app",
     "harmonyos_rpk",
     "harmonyos_store",
+    "phone_number",
 )

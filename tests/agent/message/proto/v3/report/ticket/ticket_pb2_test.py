@@ -8,15 +8,14 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     msg.ticket_id = "TICKET-123"
     msg.title = "New Vulnerability Found"
     msg.description = "A new critical vulnerability was detected."
-    msg.assigned_user = "user-01"
 
-    tag1 = msg.tags.add()
-    tag1.name = "priority"
-    tag1.value = "high"
+    comment1 = msg.comments.add()
+    comment1.author = "author-1"
+    comment1.message = "you need to do X and Y"
 
-    tag2 = msg.tags.add()
-    tag2.name = "source"
-    tag2.value = "agent-01"
+    comment2 = msg.comments.add()
+    comment2.author = "author-2"
+    comment2.message = "you need to do Z"
 
     serialized = msg.SerializeToString()
     deserialized_msg = ticket_pb2.Message()
@@ -25,12 +24,11 @@ def testMessage_whenCreateWithValidData_shouldSerializeAndDeserializeCorrectly()
     assert deserialized_msg.ticket_id == "TICKET-123"
     assert deserialized_msg.title == "New Vulnerability Found"
     assert deserialized_msg.description == "A new critical vulnerability was detected."
-    assert deserialized_msg.assigned_user == "user-01"
-    assert len(deserialized_msg.tags) == 2
-    assert deserialized_msg.tags[0].name == "priority"
-    assert deserialized_msg.tags[0].value == "high"
-    assert deserialized_msg.tags[1].name == "source"
-    assert deserialized_msg.tags[1].value == "agent-01"
+    assert len(deserialized_msg.comments) == 2
+    assert deserialized_msg.comments[0].author == "author-1"
+    assert deserialized_msg.comments[0].message == "you need to do X and Y"
+    assert deserialized_msg.comments[1].author == "author-2"
+    assert deserialized_msg.comments[1].message == "you need to do Z"
 
 
 def testMessage_whenCreateEmpty_shouldHaveDefaultValues():
@@ -39,13 +37,12 @@ def testMessage_whenCreateEmpty_shouldHaveDefaultValues():
     assert msg.ticket_id == ""
     assert msg.title == ""
     assert msg.description == ""
-    assert len(msg.tags) == 0
-    assert msg.assigned_user == ""
+    assert len(msg.comments) == 0
 
 
-def testTag_whenCreateWithDefaults_shouldHaveCorrectDefaults():
-    tag = ticket_pb2.Tag()
-    tag.name = "test_name"
+def testComment_whenCreateWithDefaults_shouldHaveCorrectDefaults():
+    comment = ticket_pb2.Comments()
+    comment.author = "test_author"
 
-    assert tag.name == "test_name"
-    assert tag.value == ""
+    assert comment.author == "test_author"
+    assert comment.message == ""
