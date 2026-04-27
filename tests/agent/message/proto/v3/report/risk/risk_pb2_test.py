@@ -52,7 +52,9 @@ def testMessage_whenCreateWithIosTestflight_shouldSerializeAndDeserializeCorrect
     assert deserialized.rating == "MEDIUM"
 
 
-def testMessage_whenCreateWithPhoneNumber_shouldSerializeAndDeserializeCorrectly() -> None:
+def testMessage_whenCreateWithPhoneNumber_shouldSerializeAndDeserializeCorrectly() -> (
+    None
+):
     """Test that risk message with phone_number asset serializes correctly."""
     phone_number_asset = phone_number_pb2.Message()
     phone_number_asset.number = "+15555550123"
