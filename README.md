@@ -9,13 +9,20 @@ OXO is a security scanning framework built for modularity, scalability, and simp
 
 OXO Engine combines specialized tools to work cohesively to find vulnerabilities and perform actions like recon, enumeration, and fingerprinting.
 
-
 * [Documentation](https://oxo.ostorlab.co/docs)
 * [Agents Store](https://oxo.ostorlab.co/store)
 * [CLI Manual](https://oxo.ostorlab.co/docs/manual)
 * [Examples](https://oxo.ostorlab.co/tutorials/examples)
 
 ![Main oxo](images/main_oxo_gif.gif)
+
+# Key Features
+
+* **Modular & Scalable**: Easily combine multiple specialized agents to perform comprehensive scans.
+* **Broad Asset Support**: Scan anything from IP addresses and domains to mobile applications (Android, iOS, HarmonyOS) and API schemas.
+* **Agent Store**: Access a growing library of community and official agents for popular security tools.
+* **Extensible**: Built-in support for creating and publishing your own agents using a simple Python-based framework.
+* **API First**: Features a GraphQL API for easy integration into CI/CD pipelines and other automated workflows.
 
 # Requirements
 
@@ -39,18 +46,11 @@ malware file scanning like VirusTotal, and much more.
 
 To run any of these tools combined, simply run the following command:
 
-> OXO CLI is accessible using the `oxo` command.
-
-```shell
-oxo scan run --install --agent nmap --agent tsunami --agent nuclei ip 8.8.8.8
-```
-
-or 
+> OXO CLI is accessible using the `oxo` or `ostorlab` commands.
 
 ```shell
 oxo scan run --install --agent agent/ostorlab/nmap --agent agent/ostorlab/tsunami --agent agent/ostorlab/nuclei ip 8.8.8.8
 ```
-
 
 This command will download and install the following scanning agents:
 
@@ -61,6 +61,8 @@ This command will download and install the following scanning agents:
 It will scan the target IP address `8.8.8.8`.
 
 Agents are shipped as standard Docker images.
+
+# Scan Management
 
 To check the scan status, run:
 
@@ -75,11 +77,17 @@ oxo vulnz list --scan-id <scan-id>
 oxo vulnz describe --vuln-id <vuln-id>
 ```
 
+To stop a running scan, run:
+
+```shell
+oxo scan stop --scan-id <scan-id>
+```
+
 # Docker Image 
 To run `oxo` in a container, you may use the publicly available image and run the following command:  
 
 ```shell
-docker run -v /var/run/docker.sock:/var/run/docker.sock ostorlab/oxo:latest scan run --install --agent nmap --agent nuclei --agent tsunami ip 8.8.8.8
+docker run -v /var/run/docker.sock:/var/run/docker.sock ostorlab/oxo:latest scan run --install --agent agent/ostorlab/nmap ip 8.8.8.8
 ```
 
 Notes:
@@ -88,18 +96,23 @@ Notes:
 
 # Assets
 
-OXO supports scanning multiple asset types; below is the list of currently supported:
+OXO supports scanning multiple asset types, allowing for comprehensive security coverage across different platforms and protocols.
 
-| Asset       | Description                                                                        |
-|-------------|------------------------------------------------------------------------------------|
-| agent       | Run a scan for an agent. This is used for agents scanning themselves (meta-scanning).|
-| ip          | Run a scan for an IP address or an IP range.                                       |
-| link        | Run a scan for a web link, accepting a URL, method, headers, and request body.     |
-| file        | Run a scan for a generic file.                                                     |
-| android-aab | Run a scan for an Android .AAB package file.                                       |
-| android-apk | Run a scan for an Android .APK package file.                                       |
-| ios-ipa     | Run a scan for an iOS .IPA file.                                                   |
-| domain-name | Run a scan for a domain name asset by specifying the protocol or port.             |
+| Category | Asset | Description |
+|----------|-------|-------------|
+| **Network** | `ip` | IP address or IP range (v4 and v6). |
+| | `domain-name` | Domain name. |
+| **Web** | `link` | Web link, accepting a URL, method, headers, and request body. |
+| | `api-schema` | API schema (OpenAPI, GraphQL, etc.). |
+| **Mobile** | `android-apk` / `android-aab` | Android package files (.APK, .AAB). |
+| | `android-store` | Android app in the Google Play Store. |
+| | `ios-ipa` | iOS package file (.IPA). |
+| | `ios-store` | iOS app in the Apple App Store. |
+| | `ios-testflight` | iOS app in TestFlight. |
+| | `harmonyos-apk` / `harmonyos-hap` | HarmonyOS package files. |
+| **Other** | `file` | Generic file. |
+| | `phone-number` | Phone number. |
+| | `agent` | Meta-scanning of an agent. |
 
 # The Store
 
@@ -120,7 +133,6 @@ The steps are basically as follows:
 * Change the `Dockerfile` by adding any extra building steps.
 * Change the `ostorlab.yaml` by adding selectors, documentation, image, and license.
 * Publish it on the store.
-* Profit!
 
 Once you have written your agent, you can publish it on the store for others to use and discover it. The store
 will handle agent building and will automatically pick up new releases from your Git repo.
@@ -144,6 +156,9 @@ Implementations of popular tools such as:
 * [XSStrike](https://github.com/s0md3v/XSStrike): XSS web vulnerability scanner with generative payload.
 * ~~[Subjack](https://github.com/haccer/subjack): Subdomain takeover scanning tool.~~
 * [DnsReaper](https://github.com/punk-security/dnsReaper): Subdomain takeover scanning tool.
+* [Gitleaks](https://github.com/gitleaks/gitleaks): SAST tool for detecting and preventing hardcoded secrets.
+* [ffuf](https://github.com/ffuf/ffuf): Fast web fuzzer written in Go.
+* [Gobuster](https://github.com/OJ/gobuster): Tool used to brute-force URIs, DNS subdomains, and more.
 
 ## Credits
 
