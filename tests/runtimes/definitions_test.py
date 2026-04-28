@@ -416,6 +416,36 @@ def testAgentInstanceSettingsToRawProto_whenServiceNameIsNotSet_shouldDeserializ
     assert parsed_proto.service_name is None
 
 
+def testAgentGroupDefinitionFromNatsRequest_whenAgentHasCapsAndSelectors_returnsNativePythonLists() -> (
+    None
+):
+    """Ensure caps, accepted_agents, and in_selectors are plain Python lists, not protobuf RepeatedScalarFieldContainers."""
+    msg = startAgentScan_pb2.Message(
+        reference_scan_id=42,
+        key="agentgroup/ostorlab/agent_group42",
+        agents=[
+            startAgentScan_pb2.Agent(
+                key="agent/ostorlab/agent1",
+                caps=["NET_ADMIN", "SYS_PTRACE"],
+                accepted_agents=["agent/ostorlab/agent2"],
+                in_selectors=["v3.report.vulnerability.network.port.service.http"],
+            ),
+        ],
+        apk=apk_pb2.Message(content=b"dummy_apk"),
+    )
+
+    agent_group_def = definitions.AgentGroupDefinition.from_bus_message(msg)
+
+    assert isinstance(agent_group_def.agents[0].caps, list) is True
+    assert isinstance(agent_group_def.agents[0].accepted_agents, list) is True
+    assert isinstance(agent_group_def.agents[0].in_selectors, list) is True
+    assert agent_group_def.agents[0].caps == ["NET_ADMIN", "SYS_PTRACE"]
+    assert agent_group_def.agents[0].accepted_agents == ["agent/ostorlab/agent2"]
+    assert agent_group_def.agents[0].in_selectors == [
+        "v3.report.vulnerability.network.port.service.http"
+    ]
+
+
 def testAssetGroupDefinitionFromYaml_whenYamlIsValid_returnsValidAssetGroupDefinition(
     mocker: plugin.MockerFixture,
 ):

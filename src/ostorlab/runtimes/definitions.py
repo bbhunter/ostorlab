@@ -273,11 +273,11 @@ class AgentGroupDefinition:
                 version=agent.version,
                 args=agent_args,
                 replicas=replicas,
-                caps=agent.caps,
+                caps=list(agent.caps),
                 cyclic_processing_limit=agent.cyclic_processing_limit,
                 depth_processing_limit=agent.depth_processing_limit,
-                accepted_agents=agent.accepted_agents,
-                in_selectors=agent.in_selectors,
+                accepted_agents=list(agent.accepted_agents),
+                in_selectors=list(agent.in_selectors),
             )
 
             agent_settings.append(agent_def)
