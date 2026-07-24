@@ -485,7 +485,11 @@ def testProcessMessage_whenExceptionRaised_shouldLogErrorWithMessageAndSystemLoa
     assert (
         isinstance(logger_error.call_args_list[0][0][1], system.SystemLoadInfo) is True
     )
-    assert logger_error.call_args_list[1][0][0] == "Exception"
+    assert (
+        logger_error.call_args_list[1][0][0]
+        == "Error processing message on selector %s"
+    )
+    assert logger_error.call_args_list[1][0][1] == "v3.healthcheck.ping"
     assert logger_error.call_args_list[1].kwargs["exc_info"] is True
     assert "Message of selector %s: %s" in logger_error.call_args_list[2][0][0]
     assert logger_error.call_args_list[2][0][1] == "v3.healthcheck.ping"
@@ -538,7 +542,11 @@ def testProcessMessage_whenExceptionRaisedAndPsutilNotAvailable_shouldLogErrorWi
     )
 
     assert logger_error.call_count == 2
-    assert logger_error.call_args_list[0][0][0] == "Exception"
+    assert (
+        logger_error.call_args_list[0][0][0]
+        == "Error processing message on selector %s"
+    )
+    assert logger_error.call_args_list[0][0][1] == "v3.healthcheck.ping"
     assert logger_error.call_args_list[0].kwargs["exc_info"] is True
     assert "Message of selector %s: %s" in logger_error.call_args_list[1][0][0]
     assert logger_error.call_args_list[1][0][1] == "v3.healthcheck.ping"

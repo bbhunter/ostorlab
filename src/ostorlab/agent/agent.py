@@ -256,7 +256,9 @@ class AgentMixin(
             system_info = system.get_system_info()
             if system_info is not None:
                 logger.error("System Info: %s", system_info)
-            logger.exception("Exception")
+            logger.exception(
+                "Error processing message on selector %s", object_message.selector
+            )
             logger.error(
                 "Message of selector %s: %s",
                 object_message.selector,

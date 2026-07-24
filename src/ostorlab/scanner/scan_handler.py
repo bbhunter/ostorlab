@@ -118,7 +118,9 @@ class ScanHandler:
                     await msg.ack()
                     return scan_id
                 except Exception:
-                    logger.exception("Exception")
+                    logger.exception(
+                        "Failed to process scan message for subject %s", msg.subject
+                    )
                     await msg.nak()
 
     async def _create_bus_handler(
