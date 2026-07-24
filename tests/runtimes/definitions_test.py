@@ -708,7 +708,9 @@ assets:
     )
 
 
-def testAssetGroupDefinitionFromYaml_whenRiskEmbedsApiSchema_returnsRiskWithApiSchema():
+def testAssetGroupDefinitionFromYaml_whenRiskEmbedsApiSchema_returnsRiskWithApiSchema() -> (
+    None
+):
     """Tests parsing a risk asset embedding an api schema target."""
     valid_yaml = """
 description: Risk with api schema
@@ -734,7 +736,9 @@ assets:
     assert isinstance(asset_group_def.targets[0].to_proto(), bytes)
 
 
-def testAssetGroupDefinitionFromYaml_whenRiskApiSchemaHasNoEndpointUrl_raisesValidationError():
+def testAssetGroupDefinitionFromYaml_whenRiskApiSchemaHasNoEndpointUrl_raisesValidationError() -> (
+    None
+):
     """Tests that an api schema target without an endpoint url is rejected by the target
     group schema instead of building a risk whose target carries no endpoint."""
     invalid_yaml = """
