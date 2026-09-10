@@ -36,6 +36,8 @@ def _to_text(styled: str | None, fallback: str | None) -> text.Text:
 
 def style_risk(risk: str | None) -> text.Text:
     """Stylize the risk with colors."""
+    if risk is None:
+        return _to_text(None, risk)
     return _to_text(STYLE_RISK_MAP.get(risk), risk)
 
 
